@@ -26,16 +26,15 @@ const Scheduler = class {
       this.runningRequests = this.runningRequests.filter(
         (element) => element.internalId !== request.internalId
       );
+      this.logStatus();
       this.run();
       request.callback(response);
-      this.logStatus();
     });
   };
 
   private logStatus = () => {
     console.log(
-      `Actual priority : ${
-        this.actualRunningPriority
+      `Actual priority : ${this.actualRunningPriority
       } - Pending : [${this.pendingRequests.map(
         (element) => element.internalId
       )}] - Running : [${this.runningRequests.map(
@@ -44,7 +43,7 @@ const Scheduler = class {
     );
   };
 
-  private async run() {
+  private run = async () => {
     let notRunForNow: Array<PriorizedRequest> = [];
     this.pendingRequests = this.pendingRequests.sort(
       (a, b) => b.level - a.level
